@@ -1,5 +1,7 @@
 package com.cts.platform.SpringSample;
 
+import java.io.IOException;
+
 public class Student {
 	private String name;
 	private Address address;
@@ -12,8 +14,9 @@ public class Student {
 		this.name = name;
 	}
 
-	public void displayInfo() {
+	public void displayInfo() throws IOException {
 		System.out.println("Hello: " + name + address.getCity());
+		throw new IOException();
 	}
 
 	public Student(Address add) {

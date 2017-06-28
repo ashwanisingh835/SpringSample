@@ -1,8 +1,13 @@
 package com.cts.platform.SpringSample;
 
+import java.io.IOException;
+
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -30,9 +35,27 @@ public class AspectSpring {
 		
 	}
 	
-	@AfterReturning("args(..)")
-	public void returnLogger(){
-		System.out.println();
+	@AfterReturning(pointcut="args(..)",returning="returnString")
+	public void returnLogger(String returnString){
+		System.out.println("After returning data"+returnString);
+	}
+	
+	@AfterThrowing(pointcut="args(..)",throwing="e")
+	public void exceptionThrow(IOException e){
+		System.out.println("exception occured"+ e);
+		
+	}
+	
+	@Around("allGetters()")
+	public void aroundMsg(ProceedingJoinPoint pjp){
+		System.out.println("before call");
+		try {
+			pjp.proceed();
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("after call");
 	}
 	
 	@Pointcut("execution(* get*(..))")
